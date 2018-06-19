@@ -1,0 +1,113 @@
+\documentclass[../thesis.tex]{subfiles}
+
+\begin{document}
+
+\section{Nêu vấn đề}
+
+	Với mục tiêu hướng tới một hệ thống làm vai trò trung gian cho việc trao đổi và mượn sách giữa người dùng với người dùng, nhóm em đặt ra các vấn đề cần được giải quyết như sau:
+	\begin{itemize}
+		\item Có những dữ liệu gì cần được lưu trữ và nên thiết kế như thế nào?
+		\item Làm sao để người dùng tham gia vào hệ thống?
+		\item Làm sao để người dùng thêm sách của mình vào hệ thống?
+		\item Làm sao để người dùng đăng sách của mình lên hệ thống và rao cho mượn?
+		\item Làm sao để người dùng có thể mượn hay trao đổi sách với người dùng khác?
+		\item Trong quá trình trao đổi hay mượn sách, có thể sẽ xảy ra những khó khăn gì và cách giải quyết?
+		\item Sau khi việc mượn sách, trao sách kết thúc, làm sao để người dùng trả lại sách?
+	\end{itemize}
+
+	\subsection{Thiết kế cơ sở dữ liệu}
+	
+	Trước hết, nhóm em liệt kê các thông tin cần thiết cho hệ thống, trong đó, sẽ bao gồm:
+	\begin{enumerate}
+		\item \textbf{Thông tin người dùng: }
+			\begin{itemize}
+				\item \textbf{Username} Người dùng cần có tên hiện thị để phân biệt với những người dùng khác\\
+				\item \textbf{Email} Được sử dụng như kênh liên lạc trực tiếp khi cần thiết, đồng thời là thông tin cho việc đăng nhập vào hệ thống\\
+				\item \textbf{Password} Kiểm tra có đúng là người dùng này không\\
+				\item \textbf{SĐT} Tương tự như email, được sử dụng như là kênh liên lạc thay thế với người dùng khác
+			\end{itemize}
+		
+		\item \textbf{Thông tin của một cuốn sách: }
+			Về việc lưu trữ thông tin một cuốn sách, ngoài các thông tin chi tiết về cuốn sách, cần có thông tin của người sở hữu cuốn sách.		
+			
+			\textcolor{red}{ảnh thông tin sách}
+			
+			Để quản lý hệ thống dữ liệu sách dễ dàng hơn, nhóm em sử dụng dạng mã có cấu trúc như mã ISBN \textcolor{red}{chú thích}, cụ thể, sẽ có hệ thống danh mục sách được chia làm 3 tầng, trong đó có:
+			\begin{itemize}
+				\item Ngôn ngữ
+					\begin{itemize}
+						\item \textbf{VN} sách tiếng việt
+						\item \textbf{EN} sách tiếng anh
+					\end{itemize}
+				\item Thể loại chung
+					\begin{itemize}
+						\item \textbf{01} 1
+						\item \textbf{02} 2
+						\item \textbf{03} 3
+						\item \textbf{04} 4
+						\item \textbf{05} 5
+						\item \textbf{06} 6
+						\item \textbf{07} 7
+						\item \textbf{08} 8
+						\item \textbf{09} 9
+						\item \textbf{10} 10
+					\end{itemize}
+				\item Thể loại cụ thể
+					\begin{itemize}
+						\item \textbf{01} 1
+						\item \textbf{02} 2
+						\item \textbf{03} 3
+						\item \textbf{04} 4
+						\item \textbf{05} 5
+						\item \textbf{06} 6
+						\item \textbf{07} 7
+						\item \textbf{08} 8
+						\item \textbf{09} 9
+						\item \textbf{10} 10
+					\end{itemize}
+				\item Số thứ tự của cuốn sách đó trong danh mục
+			\end{itemize}
+			
+			Nhiều người dùng có thể cùng có chung một cuốn sách, do vậy khi đó, các thông tin cụ thể về cuốn sách sẽ bị lặp đi lặp lại khiến cho lượng dữ liệu tăng nhiều một cách không cần thiết. Do vậy, về thông tin sở hữu sách của người dùng, nhóm em sẽ tạo một bảng riêng, và thông tin của một cuốn sách sẽ nằm ở bảng còn lại.
+			
+			\textcolor{red}{ảnh quan hệ người dùng với sách}
+			
+			\textbf{Thông tin sách}
+			\begin{itemize}
+				\item \textbf{Mã sách} Như đã nêu trên\\
+				\item \textbf{Tiêu đề} Tiêu đề cuốn sách\\
+				\item \textbf{Tác giả} Tác giả của cuốn sách\\
+				\item \textbf{Nhà xuất bản} Có những cuốn sách cùng nội dung nhưng khác nhà xuất bản\\
+				\item \textbf{Năm xuất bản} Một cuốn sách có thể có nhiều lần tái bản, là các phiên bản khác nhau\\
+			\end{itemize}				
+			\textcolor{red}{Ví dụ về một thông tin sách}
+			
+			Về việc lưu trữ thông tin sở hữu, để biết được cuốn sách có thể mượn được không, cần có một thông tin lưu trữ cho việc này, cụ thể ở đây nhóm em gọi là trạng thái sách.			
+			
+			\textbf{Thông tin sở hữu}					
+			\begin{itemize}
+				\item \textbf{Mã sách} Tiêu đề cuốn sách \\
+				\item \textbf{Người sở hữu} Người dùng sở hữu cuốn sách \\
+				\item \textbf{Trạng thái sách} Có thể mượn được hoặc đang cho mượn hoặc đang được trả \\
+			\end{itemize}
+		
+		\item \textbf{Thông tin về sự trao đổi/cho mượn sách: }
+			Những thông tin này sẽ cho phép người dùng theo dõi quá trình trao đổi/mượn sách của mình, đồng thời là thông tin cần thiết cho việc đánh giá mức độ đóng góp của những người dùng cho hệ thống, ngoài ra, còn có vai trò là thông tin cần thiết cho các sự việc không đáng xảy ra như mất sách.
+			\begin{itemize}
+				\item \textbf{Người mượn/Người trao đổi 1} Người trao đổi 1
+				\item \textbf{Người cho mượn/Người trao đổi 2} Người trao đổi 2
+				\item \textbf{Loại trao đổi} Cho mượn/Trao đổi
+				\item \textbf{Mã sách 1} Cuốn sách của người trao đổi 1/Cuốn sách được người cho mượn cho mượn
+				\item \textbf{Mã sách 2} Cuốn sách của người trao đổi 2 (nếu là loại cho mượn thì thông tin này rỗng)
+				\item \textbf{Ngày trao đổi} Ngày tháng diễn ra cuộc trao đổi
+				\item \textbf{Trạng thái của cuộc trao đổi} Đang diễn ra/Đã kết thúc/Đã hủy
+			\end{itemize}		
+	\end{enumerate}
+
+	\subsection{Hệ thống thông tin người dùng}
+		Người sử dụng hệ thống có thể đăng ký làm người dùng mới, sau đó đăng nhập và chỉnh sửa thông tin cá nhân của mình trong thời gian sử dụng.
+		
+		Vì là hệ thống trao đổi và cho mượn sách, nên thông tin về địa điểm là bắt buộc cần có để việc trao đổi có thể diễn ra, người dùng cần phải cập nhật địa điểm của mình trước khi tham gia vào hệ thống
+	\subsection{Hệ thống thông tin sách}
+	\subsection{Vấn đề cho mượn và trao đổi sách}
+\end{document}
